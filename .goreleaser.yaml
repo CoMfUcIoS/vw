@@ -23,10 +23,14 @@ archives:
       {{- .Version }}_
       {{- .Os }}_
       {{- .Arch }}
+    format_overrides:
+      - goos: windows
+        formats: [zip]
     files:
       - README.md
       - LICENSE
       - NOTICE
+      - CHANGELOG.md
       - scripts/install.sh
       - scripts/uninstall.sh
 checksum:
@@ -34,6 +38,7 @@ checksum:
 snapshot:
   version_template: '{{ incpatch .Version }}-next'
 changelog:
+  use: github
   sort: asc
   filters:
     exclude:
@@ -44,3 +49,7 @@ changelog:
       - merge conflict
       - Merge pull request
       - Merge branch
+release:
+  github:
+    owner: comfucios
+    name: vw

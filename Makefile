@@ -38,6 +38,10 @@ test-race:
 fmt:
 	go fmt ./...
 
+.PHONY: fmt-check
+fmt-check:
+	test -z "$$(gofmt -l .)"
+
 .PHONY: vet
 vet:
 	go vet ./...
@@ -45,6 +49,9 @@ vet:
 .PHONY: tidy
 tidy:
 	go mod tidy
+
+.PHONY: ci
+ci: fmt-check vet test-race build
 
 .PHONY: clean
 clean:
@@ -73,3 +80,7 @@ snapshot:
 .PHONY: release-check
 release-check:
 	goreleaser check
+
+.PHONY: release-local
+release-local:
+	goreleaser release --snapshot --clean

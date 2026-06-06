@@ -422,24 +422,79 @@ vw-<version>-<os>-<arch>/
   BUNDLE
 ```
 
-## GoReleaser
+## CI
 
-Plain `vw` releases can be built with GoReleaser:
+The repository uses GitHub Actions for CI.
+
+On pull requests and pushes to `main`, CI runs:
+
+```sh
+go mod download
+gofmt check
+go vet ./...
+go test -race ./...
+go build ./cmd/vw
+```
+
+You can run the same checks locally with:
+
+```sh
+make ci
+```
+
+## Releases
+
+Releases are automated with Release Please and GoReleaser.
+
+The release flow is:
+
+```text
+1. Merge Conventional Commit messages into main
+2. Release Please opens or updates a release PR
+3. Merge the release PR
+4. Release Please creates a GitHub release and tag
+5. GoReleaser builds binaries and uploads release artifacts
+```
+
+Use Conventional Commits:
+
+```text
+feat: add interactive item editor
+fix: handle missing bw session
+docs: update install instructions
+chore: update dependencies
+```
+
+`feat:` creates a minor release.
+
+`fix:` creates a patch release.
+
+Breaking changes create a major release when marked with `!` or a `BREAKING CHANGE:` footer.
+
+Plain vw releases are built by GoReleaser:
 
 ```sh
 goreleaser release --snapshot --clean
 ```
 
-Bundled releases that include `bw` are produced with:
+or
 
 ```sh
-scripts/package-with-bw.sh
+make snapshot
+```
+
+Bundled releases that include `bw` are produced separately with:
+
+```sh
+VERSION=0.1.0 BW_PATH=/path/to/bw scripts/package-with-bw.sh
 ```
 
 This distinction is intentional:
 
-- GoReleaser builds `vw`
-- `scripts/package-with-bw.sh` creates a bundle containing both `vw` and `bw`
+```sh
+GoReleaser -> builds vw release artifacts
+package-with-bw.sh -> creates optional bundles containing vw + bw
+```
 
 ## Security notes
 
