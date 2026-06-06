@@ -1,0 +1,46 @@
+---
+version: 2
+project_name: vw
+before:
+  hooks: [go mod tidy]
+builds:
+  - id: vw
+    main: ./cmd/vw
+    binary: vw
+    env: [CGO_ENABLED=0]
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    ldflags:
+      - -s -w
+      - -X github.com/comfucios/vw/internal/version.version={{.Version}}
+      - -X github.com/comfucios/vw/internal/version.commit={{.Commit}}
+      - -X github.com/comfucios/vw/internal/version.date={{.Date}}
+archives:
+  - id: default
+    builds: [vw]
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- .Os }}_
+      {{- .Arch }}
+    files:
+      - README.md
+      - LICENSE
+      - NOTICE
+      - scripts/install.sh
+      - scripts/uninstall.sh
+checksum:
+  name_template: checksums.txt
+snapshot:
+  version_template: '{{ incpatch .Version }}-next'
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - '^chore:'
+      - merge conflict
+      - Merge pull request
+      - Merge branch

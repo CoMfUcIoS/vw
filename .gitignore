@@ -1,0 +1,15 @@
+# Build output
+bin/
+dist/
+coverage.out
+
+# Local development/runtime state
+.vw-dev/
+.env
+*.local
+
+# OS/editor noise
+.DS_Store
+.idea/
+.vscode/
+*.swp
