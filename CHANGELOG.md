@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/CoMfUcIoS/vw/compare/v0.1.1...v0.2.0) (2026-06-07)
+
+
+### Features
+
+* **login:** Add different ways to login ([69fe594](https://github.com/CoMfUcIoS/vw/commit/69fe594477bdc77752389da0cbfd3186361da79b))
+
 ## [0.1.1](https://github.com/CoMfUcIoS/vw/compare/v0.1.0...v0.1.1) (2026-06-06)
 
 
